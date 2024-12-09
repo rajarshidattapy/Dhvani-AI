@@ -1,4 +1,4 @@
-# VAANI - Empowering Inclusive Communication through AI
+# DHVANI - Empowering Inclusive Communication through AI
 
 VAANI is a software designed to empower individuals with visual impairments by providing inclusive access to various forms of content through AI-driven technologies.
 
