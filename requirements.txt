@@ -1,0 +1,10 @@
+gtts
+googletrans
+streamlit
+sounddevice
+soundfile
+transformers
+pdf2image
+pytesseract
+Pillow
+streamlit-option-menu
