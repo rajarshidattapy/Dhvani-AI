@@ -1,6 +1,6 @@
 # DHVANI - Empowering Inclusive Communication through AI
 
-VAANI is a software designed to empower individuals with visual impairments by providing inclusive access to various forms of content through AI-driven technologies.
+Dhvani is a software designed to empower individuals with visual impairments by providing inclusive access to various forms of content through AI-driven technologies.
 
 ## Features
 
@@ -10,7 +10,7 @@ Convert text into speech in multiple languages. Users can either directly input 
 
 ### Image Captioning
 
-Generate descriptive captions for uploaded images. VAANI analyzes the content of the image and provides a verbal description of what is happening in the scene.
+Generate descriptive captions for uploaded images. Dhvani analyzes the content of the image and provides a verbal description of what is happening in the scene.
 
 ### Record Voice Note
 
@@ -18,7 +18,7 @@ Start recording voice notes, which are saved for future reference. This function
 
 ### Read Braille
 
-Convert Braille text into speech. Users can input Braille text, and VAANI will convert it into spoken language for auditory consumption.
+Convert Braille text into speech. Users can input Braille text, and Dhvani will convert it into spoken language for auditory consumption.
 
 ## Getting Started
 
@@ -26,17 +26,17 @@ Convert Braille text into speech. Users can input Braille text, and VAANI will c
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your_username/VAANI.git
+   git clone https://github.com/your_username/Dhvani.git
    ```
 2. Navigate to the project directory:
     ```bash
-   cd VAANI
+   cd Dhvani
    ```
 3. Install the required dependencies:
     ```bash
    pip install -r requirements.txt
    ```
-4. To run the VAANI application, execute the following command in your terminal:  
+4. To run the Dhvani application, execute the following command in your terminal:  
     ```bash
    streamlit run app.py
    ```
