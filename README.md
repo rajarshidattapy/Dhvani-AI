@@ -26,7 +26,7 @@ Convert Braille text into speech. Users can input Braille text, and Dhvani will 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your_username/Dhvani.git
+   git clone https://github.com/rajarshidattapy/Dhvani-AI.git
    ```
 2. Navigate to the project directory:
     ```bash
