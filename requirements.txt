@@ -8,3 +8,5 @@ pdf2image
 pytesseract
 Pillow
 streamlit-option-menu
+speech_recognition
+PyPDF2
