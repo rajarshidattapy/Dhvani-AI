@@ -1,65 +1,127 @@
-# DHVANI - Empowering Inclusive Communication through AI
+# Dhvani - Breaking Communication Barriers
 
-   Dhvani-AI is a software designed to empower blind and visually impaired individuals by providing inclusive access to various forms of content through AI-driven technologies. Here's how you can utilize its features:
+## Google Solution Challenge 2025
 
-    1. **Text-to-Speech:** Convert text into speech in multiple languages. You can either directly input text or upload a PDF file containing the text you want to convert.  
+Dhvani is an innovative web application designed to empower individuals with hearing and speech impairments. By leveraging cutting-edge technology and Google's powerful AI tools, we're making communication more accessible and inclusive for everyone.
 
-       - **Steps to use:**
-           1. Enter or upload the text you want to convert.
-           2. Select the input and target languages.
-           3. Click the "Convert Text to Speech" button. 🔊
+### 🌟 Key Features
 
-       - **Educational benefits:** Blind students can access educational materials, including textbooks and lecture notes, in audio format, facilitating independent learning and improving academic performance. 📚
+1. **PDF to Voice Conversion**
+   - Convert PDF documents into natural-sounding speech
+   - Support for long documents with automatic chunking
+   - Adjustable reading speed and voice selection
+   - Multiple language support
+   - Error handling and validation
+   - Real-time conversion status updates
 
-    2. **Image Captioning:** Upload an image to generate descriptive captions. It analyzes the content of the image and provides a verbal description of what is happening in the scene. 
-            This feature enables users to understand the context and details of the image without relying on sight. 
-            Additionally, VAANI converts the generated caption into speech, allowing users to listen to the description of the image.
-       
-        - **Steps to use:**
-        
-            1. Upload an image file.
-            2. Click the "Generate Caption" button. 🖼️
-            3. Educational Benefits: Enhance comprehension of visual content such as diagrams, charts, and illustrations, fostering a deeper understanding of various subjects. 🧠
+2. **Voice Notes**
+   - Record and transcribe voice notes in real-time
+   - High-accuracy speech recognition
+   - Automatic punctuation and formatting
+   - Save and organize notes with timestamps
+   - Easy deletion and management
+   - Offline storage capability
 
-    3. **Record Voice Note:** Start recording voice notes, which are saved for future reference. This functionality allows users to create audio recordings for personal memos or messages.  
+3. **Video Captioning**
+   - Real-time caption generation for videos
+   - Word-level timing synchronization
+   - Multiple language support
+   - High accuracy using Google's Speech-to-Text
+   - Caption editing and export options
+   - Support for various video formats
 
-       - **Steps to use:**
-           1. Enter a name for the recording (optional).
-           2. Click the "Start Recording" button to begin.
-           3. Click the "Stop Recording" button to finish. 🎙️
+4. **Braille to Spoken Language**
+   - Convert Braille text into natural speech
+   - Support for multiple Braille standards
+   - Real-time conversion with audio feedback
+   - Fallback support for offline usage
+   - Clear, natural-sounding voice output
+   - Adjustable speech settings
 
-       - **Educational benefits:** Blind students can create voice notes to summarize key points, review study materials, or dictate essays, improving organization and retention of information. 📝
+5. **Image Analysis**
+   - Detailed scene descriptions for visually impaired users
+   - Object detection and labeling
+   - Spatial relationship understanding
+   - High-accuracy image recognition
+   - Natural language descriptions
+   - Support for multiple image formats
 
-    4. **Read Braille:** Convert Braille text into speech. Users can input Braille text, and VAANI will convert it into spoken language for auditory consumption.  
+6. **AI Voice Assistant**
+   - Natural language navigation assistance
+   - Voice-activated commands
+   - Context-aware responses
+   - Intelligent error handling
+   - Continuous listening mode
+   - Offline fallback responses
 
-       - **Steps to use:**
-           1. Enter Braille text into the text area.
-           2. Click the "Read Braille" button. 📖
+### 🎯 Problem Statement
 
-       - **Educational benefits:** Blind students can access Braille materials, including tactile graphics and equations, in audio format, facilitating learning in subjects like mathematics, music, and languages. 🎶
+Communication barriers significantly impact the daily lives of individuals with hearing and speech impairments. Dhvani addresses this challenge by providing an integrated platform that combines various assistive technologies, making digital content and communication more accessible.
 
-    VAANI leverages cutting-edge AI technologies such as text-to-speech synthesis, image recognition, and natural language processing to make text-based and visual content more accessible for individuals with visual impairments. By converting text to audio, providing image descriptions, and supporting Braille text conversion, VAANI promotes greater independence and inclusion for its users. 🌟
+### 💡 Solution Approach
 
+- **Accessibility First**: Built with WCAG guidelines in mind
+- **Offline Capability**: Core features work without internet
+- **Error Resilience**: Fallback mechanisms for all features
+- **Natural Interaction**: Voice-based navigation throughout
+- **Privacy Focused**: Local processing when possible
+- **Cross-Platform**: Works on all modern browsers
 
-## Getting Started
+### 🌍 Impact
 
-### Installation
+- **Education**: Improved access to learning materials
+- **Workplace**: Enhanced communication capabilities
+- **Social Inclusion**: Better interaction with digital content
+- **Independence**: Reduced reliance on human assistance
+- **Digital Literacy**: Easier access to technology
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your_username/Dhvani.git
-   ```
-2. Navigate to the project directory:
-    ```bash
-   cd Dhvani
-   ```
-3. Install the required dependencies:
-    ```bash
-   pip install -r requirements.txt
-   ```
-4. To run the Dhvani application, execute the following command in your terminal:  
-    ```bash
-   streamlit run app.py
-   ```
+### 🛠️ Technology Stack
 
-    
+- **Frontend**: React 18, TypeScript, Tailwind CSS
+- **Backend**: Flask (Python)
+- **AI/ML**: Google Cloud APIs
+  - Gemini API for natural language processing
+  - Vision AI for image analysis
+  - Speech-to-Text for voice recognition
+  - Text-to-Speech for audio output
+- **Authentication**: Firebase Auth
+- **State Management**: React Context
+- **Animation**: Framer Motion
+- **Voice Interface**: Web Speech API
+
+### 🔒 Security Features
+
+- Secure API endpoints
+- Rate limiting
+- Input validation
+- Error handling
+- Data encryption
+- Session management
+
+### 🚀 Future Scope
+
+1. **Enhanced Features**
+   - Sign language recognition
+   - Real-time translation
+   - Emotion detection
+   - Gesture control
+
+2. **Platform Expansion**
+   - Mobile applications
+   - Browser extensions
+   - Offline desktop app
+   - API marketplace
+
+3. **Community Features**
+   - User profiles
+   - Shared resources
+   - Community support
+   - Feature voting
+
+### 👥 Team
+
+[Team Member Details]
+
+### 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
