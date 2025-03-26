@@ -35,6 +35,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 function AppRoutes() {
   const { user, loading } = useAuth();
 
+  // Show loading spinner while checking auth state
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -86,6 +87,8 @@ function AppRoutes() {
               <ImageAnalysis />
             </ProtectedRoute>
           } />
+          {/* Catch all route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </motion.div>
       {user && <Chatbot />}
@@ -95,11 +98,11 @@ function AppRoutes() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <AppRoutes />
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

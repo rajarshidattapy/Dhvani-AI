@@ -1,37 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
-import { 
-  getAuth, 
-  signInWithRedirect,
-  getRedirectResult,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signOut as firebaseSignOut,
-  User
-} from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
-// Initialize Firebase with your config
-const firebaseConfig = {
-  apiKey: "AIzaSyAKKbmAuI_pjZ5MxgEp4LAeeBKQ2GBjJws",
-  authDomain: "dhvani-a7383.firebaseapp.com",
-  projectId: "dhvani-a7383",
-  storageBucket: "dhvani-a7383.firebasestorage.app",
-  messagingSenderId: "188269365548",
-  appId: "1:188269365548:web:f40e0732e3533d1e1b8489",
-  measurementId: "G-Z6NVB2QFG1"
-};
-
-// Initialize Firebase
-let app;
-let auth;
-let provider;
-
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  provider = new GoogleAuthProvider();
-} catch (error) {
-  console.error('Firebase initialization error:', error);
+interface User {
+  id: string;
+  email: string;
+  displayName: string;
 }
 
 interface AuthContextType {
@@ -45,78 +18,42 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(() => {
+    // Try to get user from localStorage on initial load
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [initialized, setInitialized] = useState(false);
+  const navigate = useNavigate();
 
+  // Save user to localStorage whenever it changes
   useEffect(() => {
-    // In development, set a mock user immediately
-    if (process.env.NODE_ENV === 'development') {
-      setUser({
-        uid: 'dev-user-123',
-        email: 'dev@example.com',
-        displayName: 'Development User',
-      } as User);
-      setLoading(false);
-      setInitialized(true);
-      return;
-    }
-
-    // Handle auth state changes
-    if (auth) {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        setUser(user);
-        setLoading(false);
-        setInitialized(true);
-      });
-
-      return () => unsubscribe();
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
     } else {
-      setLoading(false);
-      setInitialized(true);
+      localStorage.removeItem('user');
     }
-  }, []);
-
-  // Handle redirect result
-  useEffect(() => {
-    if (!initialized || !auth) return;
-
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result?.user) {
-          setUser(result.user);
-        }
-      } catch (error) {
-        console.error('Redirect result error:', error);
-        setError('Failed to complete sign-in. Please try again.');
-      }
-    };
-
-    handleRedirectResult();
-  }, [initialized]);
+  }, [user]);
 
   const signIn = async () => {
     try {
       setError(null);
       setLoading(true);
-
-      if (process.env.NODE_ENV === 'development') {
-        setUser({
-          uid: 'dev-user-123',
-          email: 'dev@example.com',
-          displayName: 'Development User',
-        } as User);
-        setLoading(false);
-        return;
-      }
-
-      if (auth && provider) {
-        await signInWithRedirect(auth, provider);
-      } else {
-        throw new Error('Firebase auth not initialized');
-      }
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Set dummy user
+      const newUser = {
+        id: 'dummy-user-123',
+        email: 'user@example.com',
+        displayName: 'Demo User'
+      };
+      setUser(newUser);
+      
+      // Navigate to home page using React Router
+      navigate('/', { replace: true });
     } catch (error) {
       console.error('Error signing in:', error);
       setError('Failed to sign in. Please try again.');
@@ -129,17 +66,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setError(null);
       setLoading(true);
-
-      if (process.env.NODE_ENV === 'development') {
-        setUser(null);
-        setLoading(false);
-        return;
-      }
-
-      if (auth) {
-        await firebaseSignOut(auth);
-        setUser(null);
-      }
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Clear user
+      setUser(null);
+      
+      // Navigate to login page using React Router
+      navigate('/login', { replace: true });
     } catch (error) {
       console.error('Error signing out:', error);
       setError('Failed to sign out. Please try again.');
@@ -155,14 +90,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loading,
     error
   };
-
-  if (!initialized) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
-      </div>
-    );
-  }
 
   return (
     <AuthContext.Provider value={value}>

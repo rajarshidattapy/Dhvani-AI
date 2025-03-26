@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Globe2, Volume2, VolumeX } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useVoiceNavigation } from '../hooks/useVoiceNavigation';
@@ -14,8 +13,7 @@ const languages = [
 ];
 
 function Login() {
-  const { signIn, error } = useAuth();
-  const navigate = useNavigate();
+  const { signIn, error, loading } = useAuth();
   const [selectedLanguage, setSelectedLanguage] = useState(() => 
     localStorage.getItem('preferredLanguage') || 'en-US'
   );
@@ -39,7 +37,6 @@ function Login() {
     try {
       await signIn();
       localStorage.setItem('preferredLanguage', selectedLanguage);
-      navigate('/', { replace: true });
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -100,10 +97,15 @@ function Login() {
 
         <button
           onClick={handleSignIn}
-          className="w-full flex items-center justify-center gap-3 bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors"
+          disabled={loading}
+          className="w-full flex items-center justify-center gap-3 bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <span className="text-xl" role="img" aria-label="Google">🔑</span>
-          Sign in with Google
+          {loading ? (
+            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+          ) : (
+            <span className="text-xl" role="img" aria-label="Sign In">🔑</span>
+          )}
+          {loading ? 'Signing in...' : 'Sign In'}
         </button>
 
         <div className="mt-6 text-center text-sm text-gray-600">
