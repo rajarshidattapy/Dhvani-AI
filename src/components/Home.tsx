@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   FileText, 
@@ -64,13 +64,20 @@ const features = [
 
 function Home() {
   const { speak } = useVoiceNavigation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const welcomeMessage = "Welcome to Dhvani. " + features.map(f => 
-      `The ${f.title} feature is located in the ${f.position} of your screen.`
-    ).join(' ');
+    // Initial welcome message with feature descriptions
+    const welcomeMessage = "Welcome to Dhvani. Here are our features: " + 
+      features.map(f => `${f.title}: ${f.description}`).join('. ');
     speak(welcomeMessage);
-  }, []);
+  }, [speak]);
+
+  const handleFeatureClick = (feature: typeof features[0]) => {
+    if (feature.path !== '#') {
+      navigate(feature.path);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,23 +103,22 @@ function Home() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             onMouseEnter={() => speak(feature.title + ". " + feature.description)}
+            onDoubleClick={() => handleFeatureClick(feature)}
+            role="button"
+            tabIndex={0}
+            className="focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-xl"
           >
-            <Link
-              to={feature.path}
-              className="block h-full"
-            >
-              <div className="h-full bg-white rounded-xl shadow-xl p-8 hover:shadow-2xl transition-shadow duration-300">
-                <div className={`${feature.color} w-16 h-16 rounded-xl flex items-center justify-center mb-6`}>
-                  <feature.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-lg text-gray-600">
-                  {feature.description}
-                </p>
+            <div className="h-full bg-white rounded-xl shadow-xl p-8 hover:shadow-2xl transition-shadow duration-300">
+              <div className={`${feature.color} w-16 h-16 rounded-xl flex items-center justify-center mb-6`}>
+                <feature.icon className="w-8 h-8 text-white" />
               </div>
-            </Link>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                {feature.title}
+              </h3>
+              <p className="text-lg text-gray-600">
+                {feature.description}
+              </p>
+            </div>
           </motion.div>
         ))}
       </div>

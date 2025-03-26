@@ -120,8 +120,11 @@ Communication barriers significantly impact the daily lives of individuals with 
 
 ### 👥 Team
 
-[Team Member Details]
-
+- Rahil Masood (Backend)
+- Rajarshi Datta (Integration)
+- Tejasvi Kumar (Presentation, Frontend)
+- Kushal Srinivas (Frontend)
+  
 ### 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

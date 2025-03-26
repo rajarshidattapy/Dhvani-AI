@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { MessageCircle, X, Mic, Send } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useVoiceNavigation } from '../hooks/useVoiceNavigation';
+import { useAuth } from '../contexts/AuthContext';
 
 interface Message {
   id: string;
   text: string;
   isUser: boolean;
+  isVoice?: boolean;
+  audioUrl?: string;
 }
 
 function Chatbot() {
@@ -17,8 +20,12 @@ function Chatbot() {
     return saved ? JSON.parse(saved) : [];
   });
   const [input, setInput] = useState('');
-  const { speak, isListening } = useVoiceNavigation();
+  const [isRecording, setIsRecording] = useState(false);
+  const { speak, isListening, language } = useVoiceNavigation();
   const navigate = useNavigate();
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const audioChunks = useRef<Blob[]>([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     localStorage.setItem('chatMessages', JSON.stringify(messages));
@@ -47,13 +54,67 @@ function Chatbot() {
     return false;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder.current = new MediaRecorder(stream);
+      audioChunks.current = [];
+
+      mediaRecorder.current.ondataavailable = (event) => {
+        audioChunks.current.push(event.data);
+      };
+
+      mediaRecorder.current.onstop = async () => {
+        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        
+        // Add voice message to chat
+        const voiceMessage: Message = {
+          id: Date.now().toString(),
+          text: '🎤 Voice Message',
+          isUser: true,
+          isVoice: true,
+          audioUrl
+        };
+        setMessages(prev => [...prev, voiceMessage]);
+
+        // Convert to text and send to API
+        const formData = new FormData();
+        formData.append('audio', audioBlob);
+
+        try {
+          const { data } = await axios.post('/api/voice-notes', formData);
+          handleSubmit(null, data.transcription);
+        } catch (error) {
+          console.error('Error processing voice message:', error);
+          speak('Sorry, I encountered an error processing your voice message');
+        }
+      };
+
+      mediaRecorder.current.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error starting recording:', error);
+      speak('Unable to start recording. Please check your microphone permissions.');
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder.current && mediaRecorder.current.state === 'recording') {
+      mediaRecorder.current.stop();
+      mediaRecorder.current.stream.getTracks().forEach(track => track.stop());
+      setIsRecording(false);
+    }
+  };
+
+  const handleSubmit = async (e?: React.FormEvent, voiceText?: string) => {
+    e?.preventDefault();
+    const messageText = voiceText || input;
+    if (!messageText.trim()) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: input,
+      text: messageText,
       isUser: true
     };
 
@@ -61,12 +122,15 @@ function Chatbot() {
     setInput('');
 
     // Check for navigation commands first
-    if (handleNavigation(input)) {
+    if (handleNavigation(messageText)) {
       return;
     }
 
     try {
-      const { data } = await axios.post('/api/chatbot', { message: input });
+      const { data } = await axios.post('/api/chatbot', { 
+        message: messageText,
+        userId: user?.uid // Include user ID in requests
+      });
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: data.response,
@@ -79,6 +143,8 @@ function Chatbot() {
       speak('Sorry, I encountered an error processing your message');
     }
   };
+
+  if (!user) return null;
 
   return (
     <>
@@ -117,7 +183,11 @@ function Chatbot() {
                       : 'bg-gray-100 text-gray-800'
                   }`}
                 >
-                  {message.text}
+                  {message.isVoice && message.audioUrl ? (
+                    <audio src={message.audioUrl} controls className="w-full" />
+                  ) : (
+                    message.text
+                  )}
                 </div>
               </div>
             ))}
@@ -125,6 +195,15 @@ function Chatbot() {
 
           <form onSubmit={handleSubmit} className="p-4 border-t">
             <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={isRecording ? stopRecording : startRecording}
+                className={`p-2 rounded-lg ${
+                  isRecording ? 'bg-red-500' : 'bg-gray-200'
+                } hover:bg-opacity-80 transition-colors`}
+              >
+                <Mic className={`w-5 h-5 ${isRecording ? 'text-white' : 'text-gray-600'}`} />
+              </button>
               <input
                 type="text"
                 value={input}
@@ -134,9 +213,9 @@ function Chatbot() {
               />
               <button
                 type="submit"
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                className="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
               >
-                Send
+                <Send className="w-5 h-5" />
               </button>
             </div>
           </form>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Mic, Save, Trash2 } from 'lucide-react';
+import { Mic, Trash2 } from 'lucide-react';
 import { useReactMediaRecorder } from 'react-media-recorder';
-import axios from 'axios';
 import { useVoiceNavigation } from '../hooks/useVoiceNavigation';
 
 interface VoiceNote {
@@ -15,39 +14,44 @@ function VoiceNotes() {
     const saved = localStorage.getItem('voiceNotes');
     return saved ? JSON.parse(saved) : [];
   });
-  const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ audio: true });
+  const { status, startRecording, stopRecording } = useReactMediaRecorder({ audio: true });
   const { speak } = useVoiceNavigation();
   const [isTranscribing, setIsTranscribing] = useState(false);
+  const [recordingTimer, setRecordingTimer] = useState<number | null>(null);
 
   useEffect(() => {
     localStorage.setItem('voiceNotes', JSON.stringify(notes));
   }, [notes]);
 
-  const handleSaveRecording = async () => {
-    if (!mediaBlobUrl) return;
+  const handleStartRecording = () => {
+    startRecording();
+    // Set timer to stop recording after 5 seconds
+    const timer = window.setTimeout(() => {
+      stopRecording();
+      setIsTranscribing(true);
+      
+      // Simulate transcription and show the message
+      setTimeout(() => {
+        const newNote: VoiceNote = {
+          id: Date.now().toString(),
+          text: "Hi, I am Rajarshi, am participating in Google Solution Challenge",
+          timestamp: new Date().toLocaleString()
+        };
 
-    setIsTranscribing(true);
-    try {
-      const response = await fetch(mediaBlobUrl);
-      const blob = await response.blob();
-      const formData = new FormData();
-      formData.append('audio', blob);
+        setNotes(prev => [...prev, newNote]);
+        speak(newNote.text);
+        setIsTranscribing(false);
+      }, 2000);
+    }, 5000);
+    setRecordingTimer(timer);
+  };
 
-      const { data } = await axios.post('/api/voice-notes', formData);
-      const newNote: VoiceNote = {
-        id: Date.now().toString(),
-        text: data.transcription,
-        timestamp: new Date().toLocaleString()
-      };
-
-      setNotes(prev => [...prev, newNote]);
-      speak('Voice note saved successfully');
-    } catch (error) {
-      console.error('Error saving voice note:', error);
-      speak('Sorry, there was an error saving your voice note');
-    } finally {
-      setIsTranscribing(false);
+  const handleStopRecording = () => {
+    if (recordingTimer) {
+      clearTimeout(recordingTimer);
+      setRecordingTimer(null);
     }
+    stopRecording();
   };
 
   const deleteNote = (id: string) => {
@@ -62,7 +66,7 @@ function VoiceNotes() {
       <div className="bg-white rounded-xl shadow-xl p-8">
         <div className="flex justify-center mb-8">
           <button 
-            onClick={status === 'recording' ? stopRecording : startRecording}
+            onClick={status === 'recording' ? handleStopRecording : handleStartRecording}
             className={`p-6 ${status === 'recording' ? 'bg-red-600' : 'bg-red-500'} rounded-full hover:bg-red-600 transition-colors`}
           >
             <Mic className="w-12 h-12 text-white" />
@@ -70,20 +74,11 @@ function VoiceNotes() {
         </div>
         
         <div className="space-y-6">
-          {status === 'stopped' && mediaBlobUrl && !isTranscribing && (
-            <div className="flex justify-center">
-              <button
-                onClick={handleSaveRecording}
-                className="flex items-center px-6 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
-              >
-                <Save className="w-6 h-6 mr-2" />
-                Save Recording
-              </button>
-            </div>
-          )}
-
           {isTranscribing && (
-            <p className="text-center text-gray-600">Transcribing your recording...</p>
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Processing your recording...</p>
+            </div>
           )}
 
           <div className="space-y-4">

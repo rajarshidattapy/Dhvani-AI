@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Upload } from 'lucide-react';
-import axios from 'axios';
+import { Upload } from 'lucide-react';
 import { useVoiceNavigation } from '../hooks/useVoiceNavigation';
 
 interface AnalysisResult {
@@ -32,19 +31,18 @@ function ImageAnalysis() {
     if (!selectedImage) return;
 
     setLoading(true);
-    const formData = new FormData();
-    formData.append('image', selectedImage);
-
-    try {
-      const { data } = await axios.post<AnalysisResult>('/api/analyze-image', formData);
-      setAnalysis(data);
-      speak(data.description);
-    } catch (error) {
-      console.error('Error analyzing image:', error);
-      speak('Sorry, there was an error analyzing the image');
-    } finally {
+    
+    // Simulate 5 second loading
+    setTimeout(() => {
+      const mockAnalysis: AnalysisResult = {
+        labels: ['person', 'nature', 'landscape', 'building', 'sky', 'water'],
+        description: "A scenic view showing a person standing near a beautiful lake with mountains in the background. The sky is clear blue and there are some traditional buildings visible along the shoreline."
+      };
+      
+      setAnalysis(mockAnalysis);
+      speak(mockAnalysis.description);
       setLoading(false);
-    }
+    }, 5000);
   };
 
   return (

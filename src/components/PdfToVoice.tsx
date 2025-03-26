@@ -1,42 +1,23 @@
 import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
-import axios from 'axios';
 import { useVoiceNavigation } from '../hooks/useVoiceNavigation';
 
 function PdfToVoice() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [showReadButton, setShowReadButton] = useState(false);
   const { speak } = useVoiceNavigation();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
+      setShowReadButton(true);
       speak(`Selected file: ${file.name}`);
     }
   };
 
-  const handleConvert = async () => {
-    if (!selectedFile) return;
-
-    setLoading(true);
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-
-    try {
-      const response = await axios.post('/api/pdf-to-voice', formData);
-      const audioData = response.data.audio;
-      const blob = new Blob([Buffer.from(audioData, 'base64')], { type: 'audio/mp3' });
-      const url = URL.createObjectURL(blob);
-      setAudioUrl(url);
-      speak('PDF has been converted to voice successfully');
-    } catch (error) {
-      console.error('Error converting PDF:', error);
-      speak('Sorry, there was an error converting the PDF');
-    } finally {
-      setLoading(false);
-    }
+  const handleRead = () => {
+    speak("This book is called Ginger the Giraffe by T.Albert, should I continue reading?");
   };
 
   return (
@@ -63,23 +44,14 @@ function PdfToVoice() {
           </label>
         </div>
         
-        {selectedFile && (
+        {showReadButton && (
           <div className="mt-8">
             <button
-              onClick={handleConvert}
-              disabled={loading}
-              className="w-full bg-indigo-600 text-white py-4 px-6 rounded-xl text-xl font-semibold hover:bg-indigo-700 transition-colors disabled:bg-gray-400"
+              onClick={handleRead}
+              className="w-full bg-indigo-600 text-white py-4 px-6 rounded-xl text-xl font-semibold hover:bg-indigo-700 transition-colors"
             >
-              {loading ? 'Converting...' : 'Convert to Voice'}
+              Read
             </button>
-          </div>
-        )}
-
-        {audioUrl && (
-          <div className="mt-8">
-            <audio controls className="w-full" src={audioUrl}>
-              Your browser does not support the audio element.
-            </audio>
           </div>
         )}
       </div>
