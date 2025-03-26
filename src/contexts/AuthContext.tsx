@@ -12,12 +12,13 @@ import {
 
 // Initialize Firebase with your config
 const firebaseConfig = {
-  apiKey: "AIzaSyDHV6PgQHtWxmm0RkGXxkHQ_HoHX5mz9Yk",
-  authDomain: "dhvani-app.firebaseapp.com",
-  projectId: "dhvani-app",
-  storageBucket: "dhvani-app.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abc123def456ghi789jkl"
+  apiKey: "AIzaSyAKKbmAuI_pjZ5MxgEp4LAeeBKQ2GBjJws",
+  authDomain: "dhvani-a7383.firebaseapp.com",
+  projectId: "dhvani-a7383",
+  storageBucket: "dhvani-a7383.firebasestorage.app",
+  messagingSenderId: "188269365548",
+  appId: "1:188269365548:web:f40e0732e3533d1e1b8489",
+  measurementId: "G-Z6NVB2QFG1"
 };
 
 // Initialize Firebase
