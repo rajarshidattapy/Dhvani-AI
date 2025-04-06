@@ -1,4 +1,4 @@
-# Dhvani - Breaking Communication Barriers
+# Dhvani - Breaking Communication Barriers.
 
 ## Google Solution Challenge 2025
 
