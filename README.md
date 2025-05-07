@@ -2,7 +2,7 @@
 
 ## Google Solution Challenge 2025
 
-Dhvani is an innovative web application designed to empower individuals with hearing and speech impairments. By leveraging cutting-edge technology and Google's powerful AI tools, we're making communication more accessible and inclusive for everyone.
+Dhvani is an innovative web application designed to empower individuals with visual and speech impairments. By leveraging cutting-edge technology and Google's powerful AI tools, we're making communication more accessible and inclusive for everyone.
 
 ### 🌟 Key Features
 
