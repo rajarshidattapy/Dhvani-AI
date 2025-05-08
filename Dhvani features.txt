@@ -1,0 +1,30 @@
+PDF to Voice
+Convert PDF documents into spoken words
+
+Video Captioning
+Automatic captions for video content
+
+Image Analysis
+Understand what's happening in images
+
+Voice Notes
+Record and save voice notes for future reference
+
+Braille Converter
+Convert Braille to spoken language
+
+AI-Powered Sign Language Translator – Develop an AI
+model that translates sign language to text/speech in real time to assist
+the deaf community. This could be scaled into a mobile app for
+accessibility in workplaces and public spaces.
+
+- Mental health chatbot
+
+AI-Powered Handwriting Recognition for Dyslexic Individuals
+– A tool that translates difficult handwriting into readable text. Could be
+integrated into assistive education technology for special needs students.
+
+AI-Based Language Translator
+- Real-Time AI Lip-Reading Assistant – A tool that helps the
+hearing impaired understand speech by reading lips. Could be
+implemented into AR glasses for seamless daily communication.
